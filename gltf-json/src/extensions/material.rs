@@ -1,5 +1,7 @@
 #[allow(unused_imports)] // different features use different imports
 use crate::{material::StrengthFactor, texture, validation::Validate, Extras};
+#[cfg(feature = "KHR_texture_transform")]
+use crate::extensions::texture::TextureTransform;
 use gltf_derive::Validate;
 use serde_derive::{Deserialize, Serialize};
 #[cfg(feature = "extensions")]
@@ -145,6 +147,14 @@ pub struct PbrSpecularGlossiness {
 /// Defines the normal texture of a material.
 #[derive(Clone, Debug, Default, Deserialize, Serialize, Validate)]
 pub struct NormalTexture {
+    #[cfg(feature = "KHR_texture_transform")]
+    #[serde(
+        default,
+        rename = "KHR_texture_transform",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub texture_transform: Option<TextureTransform>,
+
     #[cfg(feature = "extensions")]
     #[serde(default, flatten)]
     pub others: Map<String, Value>,
@@ -153,6 +163,14 @@ pub struct NormalTexture {
 /// Defines the occlusion texture of a material.
 #[derive(Clone, Debug, Default, Deserialize, Serialize, Validate)]
 pub struct OcclusionTexture {
+    #[cfg(feature = "KHR_texture_transform")]
+    #[serde(
+        default,
+        rename = "KHR_texture_transform",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub texture_transform: Option<TextureTransform>,
+
     #[cfg(feature = "extensions")]
     #[serde(default, flatten)]
     pub others: Map<String, Value>,
